@@ -14,7 +14,7 @@ const CONFIG = {
   //    Railway backend URL, e.g: https://campwithus-backend.up.railway.app
   API_BASE_URL: _isLocal
     ? 'http://localhost:5000/api'
-    : 'https://camp-with-us-production.up.railway.app/api',
+    : 'https://camp-with-us-vl6w.onrender.com/api',
   APP_NAME: 'Camp With Us',
   TAGLINE: 'Travel Smart • Travel Safe'
 };
