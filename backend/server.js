@@ -20,7 +20,12 @@ app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, curl, Postman)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin) || origin.endsWith('.railway.app') || origin.endsWith('.up.railway.app')) {
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.railway.app') ||
+      origin.endsWith('.up.railway.app') ||
+      origin.endsWith('.netlify.app')
+    ) {
       return callback(null, true);
     }
     callback(new Error('Not allowed by CORS'));
