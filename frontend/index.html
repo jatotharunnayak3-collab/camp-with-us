@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camp With Us — Travel Smart • Travel Safe</title>
+  <meta name="description" content="Smart India Hackathon Tourism Platform — Explore India with AI-powered itineraries, hotel discovery, safety tools and more.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏕️</text></svg>">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVBAR
+     ═══════════════════════════════════════════════════════════ -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-brand" onclick="showSection('home')" aria-label="Camp With Us Home">
+    <span class="brand-icon" aria-hidden="true">🏕️</span>
+    <div>
+      <span>Camp With Us</span>
+      <span class="brand-tag">Travel Smart • Travel Safe</span>
+    </div>
+  </div>
+
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+
+  <div class="nav-menu" id="nav-menu" role="menubar">
+    <button class="nav-link" data-section="home"         role="menuitem">Home</button>
+    <button class="nav-link" data-section="destinations" role="menuitem">Explore</button>
+    <button class="nav-link" data-section="planner"      role="menuitem">Plan Trip</button>
+    <button class="nav-link" data-section="hotels"       role="menuitem">Hotels</button>
+    <button class="nav-link" data-section="safety"       role="menuitem">Safety</button>
+    <button class="nav-link" data-section="businesses"   role="menuitem">Local</button>
+    <button class="nav-link" data-section="map"          role="menuitem">Map</button>
+    <button class="nav-link" data-section="assistant"    role="menuitem">AI Chat</button>
+    <button class="nav-link" data-section="dashboard"    role="menuitem">Dashboard</button>
+  </div>
+
+  <div class="nav-actions">
+    <div id="nav-auth">
+      <button class="btn btn-outline btn-sm" data-section="auth" onclick="showSection('auth')">Sign In</button>
+    </div>
+    <div id="nav-user" class="hidden">
+      <span class="nav-user-name">👤 <span id="nav-user-name"></span></span>
+      <button class="btn btn-outline btn-sm" id="logout-btn">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: HOME
+     ═══════════════════════════════════════════════════════════ -->
+<main>
+<section id="section-home" class="section">
+  <!-- Hero -->
+  <div class="hero" role="banner">
+    <div class="hero-content">
+      <div class="hero-badge">🇮🇳 Smart India Hackathon 2024</div>
+      <h1>Explore India.<br>Travel Smarter. Travel Safer.</h1>
+      <p class="hero-tagline">AI-powered travel planning, hotel discovery, real-time safety tools and more — all in one platform.</p>
+
+      <div class="hero-search-box" role="search">
+        <span aria-hidden="true">🔍</span>
+        <input type="text" id="hero-search" placeholder="Search Warangal, Goa, Jaipur..." aria-label="Search destination">
+        <button class="btn btn-primary" id="hero-search-btn">Search</button>
+      </div>
+
+      <div class="hero-btns">
+        <button class="btn btn-primary btn-lg" data-section="planner" data-action="plan-trip">🗓️ Plan Your Trip</button>
+        <button class="btn-hero-outline btn-lg" data-section="destinations" onclick="showSection('destinations'); loadAllDestinations()">🗺️ Explore Destinations</button>
+      </div>
+
+      <div class="hero-stats" role="list" aria-label="Platform statistics">
+        <div class="hero-stat" role="listitem"><div class="stat-num">30+</div><div class="stat-label">Destinations</div></div>
+        <div class="hero-stat" role="listitem"><div class="stat-num">AI</div><div class="stat-label">Trip Planner</div></div>
+        <div class="hero-stat" role="listitem"><div class="stat-num">10+</div><div class="stat-label">Safety Tools</div></div>
+        <div class="hero-stat" role="listitem"><div class="stat-num">24/7</div><div class="stat-label">AI Assistant</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Cards -->
+  <div class="container">
+    <div class="section-header">
+      <h2>Everything You Need to Travel India</h2>
+      <p>Explore our complete suite of smart tourism tools</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+
+    <div class="features-grid" role="list">
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('planner')" onkeydown="if(event.key==='Enter')showSection('planner')" aria-label="AI Travel Planner">
+        <div class="feature-icon" aria-hidden="true">🤖</div>
+        <h3>AI Travel Planner</h3>
+        <p>Personalised day-by-day itineraries powered by Gemini AI</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('map')" onkeydown="if(event.key==='Enter')showSection('map')" aria-label="Smart Tourist Map">
+        <div class="feature-icon" aria-hidden="true">🗺️</div>
+        <h3>Smart Tourist Map</h3>
+        <p>Find attractions, hotels, hospitals and services near you</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('hotels')" onkeydown="if(event.key==='Enter')showSection('hotels')" aria-label="Hotel Discovery">
+        <div class="feature-icon" aria-hidden="true">🏨</div>
+        <h3>Hotel Discovery</h3>
+        <p>Find stays that match your budget and traveller type</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('map')" onkeydown="if(event.key==='Enter')showSection('map')" aria-label="Smart Route Planner">
+        <div class="feature-icon" aria-hidden="true">🚌</div>
+        <h3>Smart Route Planner</h3>
+        <p>Plan multi-stop routes across Indian cities</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('destinations')" onkeydown="if(event.key==='Enter')showSection('destinations')" aria-label="Live Travel Conditions">
+        <div class="feature-icon" aria-hidden="true">🌦️</div>
+        <h3>Live Travel Conditions</h3>
+        <p>Best seasons, climate info and travel advisories</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('planner')" onkeydown="if(event.key==='Enter')showSection('planner')" aria-label="Personalised Tourism">
+        <div class="feature-icon" aria-hidden="true">👨‍👩‍👧</div>
+        <h3>Personalised Tourism</h3>
+        <p>Plans adapted for Students, Families, Solo and Senior travellers</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('assistant')" onkeydown="if(event.key==='Enter')showSection('assistant')" aria-label="AI Multilingual Assistant">
+        <div class="feature-icon" aria-hidden="true">🗣️</div>
+        <h3>AI Multilingual Assistant</h3>
+        <p>Ask travel questions in English, Hindi, Telugu, Tamil and more</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('destinations')" onkeydown="if(event.key==='Enter')showSection('destinations')" aria-label="AR Heritage Mode">
+        <div class="feature-icon" aria-hidden="true">📸</div>
+        <h3>AR Heritage Mode</h3>
+        <p>Explore monuments with rich historical information</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('reviews')" onkeydown="if(event.key==='Enter')showSection('reviews')" aria-label="Verified Reviews">
+        <div class="feature-icon" aria-hidden="true">⭐</div>
+        <h3>Verified Reviews</h3>
+        <p>Authentic traveller reviews for destinations and stays</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('businesses')" onkeydown="if(event.key==='Enter')showSection('businesses')" aria-label="Local Business Promotion">
+        <div class="feature-icon" aria-hidden="true">🏪</div>
+        <h3>Local Business Promotion</h3>
+        <p>Discover artisans, food stalls and authentic local experiences</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('safety')" onkeydown="if(event.key==='Enter')showSection('safety')" aria-label="Tourist Safety">
+        <div class="feature-icon" aria-hidden="true">🚨</div>
+        <h3>Tourist Safety</h3>
+        <p>Emergency numbers, safety tips and location sharing</p>
+      </div>
+      <div class="feature-card" role="listitem" tabindex="0" onclick="showSection('dashboard')" onkeydown="if(event.key==='Enter')showSection('dashboard')" aria-label="Tourism Dashboard">
+        <div class="feature-icon" aria-hidden="true">📊</div>
+        <h3>Tourism Dashboard</h3>
+        <p>Live platform statistics and destination highlights</p>
+      </div>
+    </div>
+
+    <!-- Featured Destinations preview on home -->
+    <div class="section-header" style="margin-top:1rem">
+      <h2>Featured Destinations</h2>
+      <p>Handpicked destinations across incredible India</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+    <div id="featured-destinations" class="cards-grid" aria-live="polite" aria-label="Featured destinations"></div>
+    <div style="text-align:center; margin: 1.5rem 0">
+      <button class="btn btn-primary btn-lg" data-section="destinations" onclick="showSection('destinations'); loadAllDestinations()">View All 30+ Destinations →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: DESTINATIONS
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-destinations" class="section hidden">
+  <div class="container">
+    <div class="section-header">
+      <h2>🗺️ Explore India</h2>
+      <p>Discover 30+ incredible destinations across the country</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+
+    <div class="search-bar" role="search" aria-label="Search destinations">
+      <span aria-hidden="true">🔍</span>
+      <input type="text" id="dest-search-input" placeholder="Search destinations, states, categories..." aria-label="Search destinations">
+      <button class="btn btn-primary" id="dest-search-btn">Search</button>
+    </div>
+
+    <div class="category-filters" role="group" aria-label="Filter by category">
+      <button class="category-btn active" data-category="All">All</button>
+      <button class="category-btn" data-category="Heritage">🏛️ Heritage</button>
+      <button class="category-btn" data-category="Beach">🏖️ Beach</button>
+      <button class="category-btn" data-category="Hill Station">⛰️ Hill Station</button>
+      <button class="category-btn" data-category="Religious">🛕 Religious</button>
+      <button class="category-btn" data-category="City">🏙️ City</button>
+      <button class="category-btn" data-category="Adventure">🧗 Adventure</button>
+      <button class="category-btn" data-category="Wildlife">🐘 Wildlife</button>
+      <button class="category-btn" data-category="Cultural">🎭 Cultural</button>
+    </div>
+
+    <div id="all-destinations" class="cards-grid" aria-live="polite" aria-label="Destinations list">
+      <div class="loading-state"><div class="spinner" aria-hidden="true"></div><p>Loading destinations...</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: DESTINATION DETAIL
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-destination-detail" class="section hidden">
+  <div class="container">
+    <div id="destination-detail" aria-live="polite"></div>
+
+    <!-- Reviews sub-section inside destination detail -->
+    <div class="dest-detail" style="margin-top:0; padding-top:0">
+      <div class="reviews-section">
+        <h3>⭐ Traveller Reviews</h3>
+        <div id="reviews-list" aria-live="polite"></div>
+
+        <div style="margin-top:1.5rem">
+          <h3>Write a Review</h3>
+          <div class="form-card review-form-card" style="margin-left:0">
+            <form id="review-form" novalidate>
+              <div class="form-group">
+                <label for="review-rating">Your Rating *</label>
+                <select id="review-rating" class="form-control" required aria-required="true">
+                  <option value="">Select rating</option>
+                  <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
+                  <option value="4">⭐⭐⭐⭐ Good (4)</option>
+                  <option value="3">⭐⭐⭐ Average (3)</option>
+                  <option value="2">⭐⭐ Below Average (2)</option>
+                  <option value="1">⭐ Poor (1)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="review-title">Review Title</label>
+                <input type="text" id="review-title" class="form-control" placeholder="A short headline for your review" maxlength="100">
+              </div>
+              <div class="form-group">
+                <label for="review-comment">Your Review *</label>
+                <textarea id="review-comment" class="form-control" rows="4" placeholder="Share your experience (minimum 10 characters)..." required aria-required="true" minlength="10" maxlength="1000"></textarea>
+              </div>
+              <p id="review-error" class="error-text" role="alert"></p>
+              <button type="submit" class="btn btn-primary">Submit Review</button>
+              <p class="form-link" style="margin-top:.75rem">You must be <a onclick="showSection('auth')">signed in</a> to submit a review.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: AI TRIP PLANNER
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-planner" class="section hidden">
+  <div class="container">
+    <div class="section-header">
+      <h2>🤖 AI Trip Planner</h2>
+      <p>Tell us about your trip and Gemini AI will create a personalised day-by-day itinerary</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+
+    <div style="display:flex; gap:2rem; flex-wrap:wrap; align-items:flex-start; justify-content:center; padding-bottom:2rem">
+      <div class="form-card planner-card">
+        <h2>Plan Your Trip</h2>
+        <form id="planner-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="planner-destination">Destination *</label>
+              <input type="text" id="planner-destination" class="form-control" placeholder="e.g. Warangal" required aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="planner-days">Number of Days *</label>
+              <select id="planner-days" class="form-control" required aria-required="true">
+                <option value="">Select days</option>
+                <option value="1">1 Day</option>
+                <option value="2">2 Days</option>
+                <option value="3">3 Days</option>
+                <option value="4">4 Days</option>
+                <option value="5">5 Days</option>
+                <option value="7">1 Week</option>
+                <option value="10">10 Days</option>
+                <option value="14">2 Weeks</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="planner-budget">Total Budget (₹) *</label>
+              <input type="number" id="planner-budget" class="form-control" placeholder="e.g. 2000" min="100" required aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="planner-traveller">Traveller Type *</label>
+              <select id="planner-traveller" class="form-control" required aria-required="true">
+                <option value="">Select type</option>
+                <option value="Student">🎒 Student</option>
+                <option value="Family">👨‍👩‍👧 Family</option>
+                <option value="Solo">🧍 Solo</option>
+                <option value="Senior">🧓 Senior</option>
+                <option value="Couple">💑 Couple</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="planner-food">Food Preference</label>
+            <select id="planner-food" class="form-control">
+              <option value="Vegetarian">🥦 Vegetarian</option>
+              <option value="Non-Vegetarian">🍗 Non-Vegetarian</option>
+              <option value="Vegan">🌿 Vegan</option>
+              <option value="Jain">🙏 Jain</option>
+              <option value="No preference">No preference</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Interests (select all that apply)</label>
+            <div class="checkbox-group" role="group" aria-label="Interests">
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="History"> History</label>
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="Culture"> Culture</label>
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="Nature"> Nature</label>
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="Adventure"> Adventure</label>
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="Food"> Food</label>
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="Shopping"> Shopping</label>
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="Temples"> Temples</label>
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="Photography"> Photography</label>
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="Wildlife"> Wildlife</label>
+              <label class="checkbox-label"><input type="checkbox" class="interest-check" value="Beaches"> Beaches</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Roaming Times</label>
+            <div class="checkbox-group" role="group" aria-label="Roaming times">
+              <label class="checkbox-label"><input type="checkbox" class="roaming-check" value="Morning" checked> 🌅 Morning</label>
+              <label class="checkbox-label"><input type="checkbox" class="roaming-check" value="Afternoon"> ☀️ Afternoon</label>
+              <label class="checkbox-label"><input type="checkbox" class="roaming-check" value="Evening"> 🌆 Evening</label>
+              <label class="checkbox-label"><input type="checkbox" class="roaming-check" value="Night"> 🌙 Night</label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg" id="planner-submit-btn" style="width:100%">
+            🗓️ Generate My Itinerary
+          </button>
+        </form>
+      </div>
+
+      <!-- Planner Result -->
+      <div id="planner-result" style="flex:1; min-width:300px" aria-live="polite">
+        <div class="form-card" style="text-align:center; color:var(--gray-400)">
+          <div style="font-size:3rem; margin-bottom:1rem">🗓️</div>
+          <h3 style="color:var(--green-primary)">Your Itinerary Will Appear Here</h3>
+          <p>Fill in the form on the left and click <strong>Generate My Itinerary</strong>.</p>
+          <p style="margin-top:.5rem; font-size:.85rem">Powered by Google Gemini AI — requires a valid GEMINI_API_KEY in backend/.env</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: HOTEL DISCOVERY
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-hotels" class="section hidden">
+  <div class="container">
+    <div class="section-header">
+      <h2>🏨 Hotel Discovery</h2>
+      <p>Find the perfect stay for your budget and traveller type</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+
+    <div style="display:flex; gap:2rem; flex-wrap:wrap; align-items:flex-start; justify-content:center; padding-bottom:2rem">
+      <div class="form-card hotel-search-card">
+        <h2>Find Hotels</h2>
+        <form id="hotel-search-form" novalidate>
+          <div class="form-group">
+            <label for="hotel-city">Destination City *</label>
+            <input type="text" id="hotel-city" class="form-control" placeholder="e.g. Warangal, Goa, Jaipur" required aria-required="true">
+            <div class="city-chips" style="margin-top:.5rem; display:flex; flex-wrap:wrap; gap:.35rem;">
+              <span class="city-chip-label" style="font-size:.75rem;color:var(--gray-400);align-self:center;">Quick:</span>
+              <button type="button" class="hotel-city-chip" data-city="Hyderabad">🏙️ Hyderabad</button>
+              <button type="button" class="hotel-city-chip" data-city="Panaji">🏖️ Goa</button>
+              <button type="button" class="hotel-city-chip" data-city="Jaipur">🏰 Jaipur</button>
+              <button type="button" class="hotel-city-chip" data-city="Mumbai">🌆 Mumbai</button>
+              <button type="button" class="hotel-city-chip" data-city="Manali">⛰️ Manali</button>
+              <button type="button" class="hotel-city-chip" data-city="Bangalore">💻 Bangalore</button>
+              <button type="button" class="hotel-city-chip" data-city="Warangal">🏛️ Warangal</button>
+              <button type="button" class="hotel-city-chip" data-city="Chennai">🎭 Chennai</button>
+              <button type="button" class="hotel-city-chip" data-city="Varanasi">🕉️ Varanasi</button>
+              <button type="button" class="hotel-city-chip" data-city="Kolkata">🎨 Kolkata</button>
+              <button type="button" class="hotel-city-chip" data-city="Udaipur">💧 Udaipur</button>
+              <button type="button" class="hotel-city-chip" data-city="Agra">🕌 Agra</button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="hotel-budget">Max Price/Night (₹)</label>
+              <input type="number" id="hotel-budget" class="form-control" placeholder="e.g. 2000" min="0">
+            </div>
+            <div class="form-group">
+              <label for="hotel-type">Hotel Type</label>
+              <select id="hotel-type" class="form-control">
+                <option value="">Any type</option>
+                <option value="Budget">💰 Budget</option>
+                <option value="Mid-Range">🏨 Mid-Range</option>
+                <option value="Luxury">💎 Luxury</option>
+                <option value="Hostel">🎒 Hostel</option>
+                <option value="Guesthouse">🏡 Guesthouse</option>
+                <option value="Resort">🌴 Resort</option>
+                <option value="Homestay">🏠 Homestay</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Amenities</label>
+            <div class="checkbox-group" role="group" aria-label="Amenities filter">
+              <label class="checkbox-label"><input type="checkbox" class="amenity-check" value="WiFi"> WiFi</label>
+              <label class="checkbox-label"><input type="checkbox" class="amenity-check" value="AC"> AC</label>
+              <label class="checkbox-label"><input type="checkbox" class="amenity-check" value="Parking"> Parking</label>
+              <label class="checkbox-label"><input type="checkbox" class="amenity-check" value="Restaurant"> Restaurant</label>
+              <label class="checkbox-label"><input type="checkbox" class="amenity-check" value="Pool"> Pool</label>
+              <label class="checkbox-label"><input type="checkbox" class="amenity-check" value="Breakfast"> Breakfast</label>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:0.6rem; margin-top:0.5rem">
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%">🔍 Find Hotels</button>
+            <button type="button" id="hotel-ai-match-btn" class="btn btn-secondary btn-lg btn-shimmer" style="width:100%">✨ AI Smart Match</button>
+          </div>
+        </form>
+
+        <div style="margin-top:1rem; padding:1rem; background:var(--green-xlight); border-radius:var(--radius-sm)">
+          <p style="font-size:.8rem; color:var(--green-primary)">
+            <strong>ℹ️ About this data:</strong> Hotel listings are <strong>Curated Demo Data</strong> created for SIH demonstration purposes. They are not live commercial hotel availability or booking data.
+          </p>
+        </div>
+      </div>
+
+      <!-- Hotel Results -->
+      <div style="flex:1; min-width:300px">
+        <div id="hotel-results" aria-live="polite">
+          <div class="form-card" style="text-align:center; color:var(--gray-400)">
+            <div style="font-size:3rem; margin-bottom:1rem">🏨</div>
+            <h3 style="color:var(--green-primary)">Hotels Will Appear Here</h3>
+            <p>Click a city above or enter any city and click <strong>Find Hotels</strong>.</p>
+            <p style="margin-top:.5rem; font-size:.85rem">30 cities available: Hyderabad, Goa, Jaipur, Manali, Varanasi, Bangalore, Mumbai &amp; more</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: SAFETY
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-safety" class="section hidden">
+  <div class="container">
+    <div class="section-header">
+      <h2>🚨 Tourist Safety</h2>
+      <p>Emergency contacts, safety tips and location services for travellers in India</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+    <div class="page-pad" style="padding-top:0">
+      <div id="safety-numbers" aria-live="polite">
+        <div class="loading-state"><div class="spinner" aria-hidden="true"></div><p>Loading safety information...</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: LOCAL BUSINESSES
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-businesses" class="section hidden">
+  <div class="container">
+    <div class="section-header">
+      <h2>🏪 Local Business Promotion</h2>
+      <p>Discover authentic artisans, local food, guided experiences and more</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+
+    <div class="search-bar" style="margin-bottom:1.5rem" role="search" aria-label="Filter local businesses">
+      <input type="text" id="biz-city" placeholder="Filter by city (e.g. Warangal, Hyderabad...)" class="form-control" style="border:none; outline:none">
+      <select id="biz-category" class="form-control" style="border:none; outline:none; flex:0 0 auto">
+        <option value="">All Categories</option>
+        <option value="Artisan">Artisan</option>
+        <option value="Handicrafts">Handicrafts</option>
+        <option value="Food & Beverages">Food & Beverages</option>
+        <option value="Tour Guide">Tour Guide</option>
+        <option value="Local Shop">Local Shop</option>
+        <option value="Experience">Experience</option>
+        <option value="Transport">Transport</option>
+      </select>
+      <button class="btn btn-primary" id="biz-filter-btn">Filter</button>
+    </div>
+
+    <div id="businesses-grid" aria-live="polite">
+      <div class="loading-state"><div class="spinner" aria-hidden="true"></div><p>Loading local businesses...</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: AUTH (Login / Register)
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-auth" class="section hidden" style="background:var(--green-xlight)">
+  <div class="container" style="padding-top:3rem; padding-bottom:3rem">
+    <!-- Login Panel -->
+    <div id="login-panel" class="form-card">
+      <div style="text-align:center; margin-bottom:1.5rem">
+        <div style="font-size:2.5rem">🏕️</div>
+        <h2 style="margin-bottom:.25rem">Welcome Back</h2>
+        <p>Sign in to save trips and write reviews</p>
+      </div>
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="login-email">Email Address *</label>
+          <input type="email" id="login-email" class="form-control" placeholder="your@email.com" required aria-required="true" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password *</label>
+          <input type="password" id="login-password" class="form-control" placeholder="Your password" required aria-required="true" autocomplete="current-password">
+        </div>
+        <p id="login-error" class="error-text" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%; margin-top:.5rem">Sign In</button>
+      </form>
+      <p class="form-link">Don't have an account? <a id="show-register" role="button" tabindex="0">Create one here</a></p>
+      <p class="form-link" style="margin-top:.5rem">
+        <small>Use any email & password (min 6 chars) to register and test.</small>
+      </p>
+    </div>
+
+    <!-- Register Panel -->
+    <div id="register-panel" class="form-card hidden">
+      <div style="text-align:center; margin-bottom:1.5rem">
+        <div style="font-size:2.5rem">🌟</div>
+        <h2 style="margin-bottom:.25rem">Create Account</h2>
+        <p>Join Camp With Us — it's free</p>
+      </div>
+      <form id="register-form" novalidate>
+        <div class="form-group">
+          <label for="reg-name">Full Name *</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="Your full name" required aria-required="true" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email Address *</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="your@email.com" required aria-required="true" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password * <small>(min 6 characters)</small></label>
+          <input type="password" id="reg-password" class="form-control" placeholder="Choose a password" required aria-required="true" minlength="6" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label for="reg-traveller">I am a...</label>
+          <select id="reg-traveller" class="form-control">
+            <option value="">Select traveller type</option>
+            <option value="Student">🎒 Student</option>
+            <option value="Family">👨‍👩‍👧 Family</option>
+            <option value="Solo">🧍 Solo Traveller</option>
+            <option value="Senior">🧓 Senior</option>
+          </select>
+        </div>
+        <p id="register-error" class="error-text" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%; margin-top:.5rem">Create Account</button>
+      </form>
+      <p class="form-link">Already have an account? <a id="show-login" role="button" tabindex="0">Sign in here</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: MAP & ROUTE PLANNER
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-map" class="section hidden">
+  <div class="container">
+    <div class="section-header">
+      <h2>🗺️ Smart Tourist Map & Route Planner</h2>
+      <p>Search for attractions, plan routes and navigate India</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+
+    <div style="display:flex; gap:2rem; flex-wrap:wrap; justify-content:center; padding-bottom:2rem">
+
+      <!-- Map Search -->
+      <div class="form-card map-card">
+        <h2>Find Places</h2>
+        <p style="margin-bottom:1.25rem">Search for attractions, hotels, hospitals, police, transport and more near any destination.</p>
+        <div class="form-group">
+          <label for="map-search-input">Location / City *</label>
+          <input type="text" id="map-search-input" class="form-control" placeholder="e.g. Warangal, Goa Beach...">
+        </div>
+        <div class="form-group">
+          <label for="map-type">Type of Place</label>
+          <select id="map-type" class="form-control">
+            <option value="">Any place</option>
+            <option value="tourist attractions">🏛️ Tourist Attractions</option>
+            <option value="hotels">🏨 Hotels</option>
+            <option value="restaurants">🍽️ Restaurants</option>
+            <option value="hospital">🏥 Hospitals</option>
+            <option value="police station">👮 Police Stations</option>
+            <option value="bus stand">🚌 Bus Stands</option>
+            <option value="railway station">🚆 Railway Stations</option>
+            <option value="ATM">🏧 ATMs</option>
+            <option value="pharmacy">💊 Pharmacy</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" id="map-search-btn" style="width:100%">🗺️ Search on Map</button>
+        <div id="map-result" style="margin-top:1rem" aria-live="polite"></div>
+        <p style="margin-top:1rem; font-size:.78rem; color:var(--gray-400)">Map search opens Google Maps in a new tab.</p>
+      </div>
+
+      <!-- Route Planner -->
+      <div class="form-card route-card">
+        <h2>Route Planner</h2>
+        <p style="margin-bottom:1.25rem">Plan a multi-stop journey across India. Opens in Google Maps for navigation.</p>
+        <div class="form-group">
+          <label for="route-from">Starting Point *</label>
+          <input type="text" id="route-from" class="form-control" placeholder="e.g. Hyderabad">
+        </div>
+        <div class="form-group">
+          <label for="route-to">Destination *</label>
+          <input type="text" id="route-to" class="form-control" placeholder="e.g. Warangal">
+        </div>
+        <div class="form-group">
+          <label for="route-stops">Stops Along the Way (optional)</label>
+          <input type="text" id="route-stops" class="form-control" placeholder="e.g. Khammam (comma-separated)">
+        </div>
+        <button class="btn btn-primary" id="route-plan-btn" style="width:100%">🚗 Plan Route</button>
+        <div id="route-result" style="margin-top:1rem" aria-live="polite"></div>
+        <p style="margin-top:1rem; font-size:.78rem; color:var(--gray-400)">Route guidance is provided via Google Maps. Actual travel times depend on traffic and transport mode. This is a map-based routing feature.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: REVIEWS (standalone)
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-reviews" class="section hidden">
+  <div class="container">
+    <div class="section-header">
+      <h2>⭐ Traveller Reviews</h2>
+      <p>Read and write reviews for destinations and hotels</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+    <div class="page-pad" style="padding-top:0">
+      <p>Select a destination from the <a onclick="showSection('destinations'); loadAllDestinations()">Explore</a> section to read and write reviews for that place.</p>
+
+      <div class="form-card review-form-card" style="margin: 2rem 0 0 0">
+        <h2>Write a Review</h2>
+        <p style="margin-bottom:1rem">You must be signed in and have selected a destination to review.</p>
+        <form id="review-form-standalone" onsubmit="handleStandaloneReview(event)" novalidate>
+          <div class="form-group">
+            <label for="rs-rating">Your Rating *</label>
+            <select id="rs-rating" class="form-control" required>
+              <option value="">Select rating</option>
+              <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
+              <option value="4">⭐⭐⭐⭐ Good (4)</option>
+              <option value="3">⭐⭐⭐ Average (3)</option>
+              <option value="2">⭐⭐ Below Average (2)</option>
+              <option value="1">⭐ Poor (1)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="rs-comment">Your Review *</label>
+            <textarea id="rs-comment" class="form-control" rows="4" placeholder="Share your experience..." required minlength="10"></textarea>
+          </div>
+          <p id="rs-error" class="error-text" role="alert"></p>
+          <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: AI MULTILINGUAL ASSISTANT
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-assistant" class="section hidden">
+  <div class="container chat-page-container" style="padding-top:1.5rem; padding-bottom:3rem">
+    <div class="section-header" style="padding-bottom:1rem">
+      <h2>🗣️ AI Multilingual Assistant</h2>
+      <p>Instant travel answers in your preferred Indian language — powered by Gemini AI</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+
+    <div class="chat-container">
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <div class="chat-bot-avatar">🤖</div>
+          <div>
+            <h3 class="chat-bot-title">Camp With Us AI Guide</h3>
+            <span class="chat-status-pill"><span class="status-dot"></span> Active • Multilingual</span>
+          </div>
+        </div>
+        <div class="chat-header-context">
+          <input type="text" id="assistant-destination" class="form-control form-control-sm" placeholder="📍 Destination Context (e.g. Goa, Warangal)" style="width:230px; font-size:0.85rem">
+        </div>
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="chat-chips-bar" aria-label="Suggested questions">
+        <span class="chips-label">💡 Try:</span>
+        <button type="button" class="chat-chip" data-prompt="What are the must-visit temples in Warangal?">Warangal Temples</button>
+        <button type="button" class="chat-chip" data-prompt="Best time to visit Goa and top beaches?">Goa Beaches</button>
+        <button type="button" class="chat-chip" data-prompt="What is a good 3-day budget for Manali?">Manali Budget</button>
+        <button type="button" class="chat-chip" data-prompt="Famous street food to try in Jaipur?">Jaipur Street Food</button>
+      </div>
+
+      <!-- Chat Messages Scroll Window -->
+      <div class="chat-messages" id="assistant-chat-messages" role="log" aria-live="polite">
+        <!-- Initial Bot Welcome Bubble -->
+        <div class="chat-bubble-wrap bot-wrap">
+          <div class="chat-bubble-avatar">🤖</div>
+          <div class="chat-bubble bot-bubble">
+            <div class="bubble-meta">
+              <span class="bubble-sender">AI Assistant</span>
+              <span class="assistant-lang-badge">🇬🇧 English</span>
+            </div>
+            <div class="bubble-content">
+              Namaste! 🙏 I am your smart travel guide. Ask me anything about Indian tourist destinations, monuments, culture, local delicacies, best times to visit, or travel safety in your preferred language!
+            </div>
+            <span class="bubble-time">Just now</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div id="assistant-typing-indicator" class="chat-typing-indicator hidden">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-text">AI is crafting response...</span>
+      </div>
+
+      <!-- Chat Input Footer -->
+      <form id="assistant-chat-form" class="chat-input-bar" novalidate>
+        <div class="chat-lang-select-wrap">
+          <select id="assistant-language" class="form-control chat-lang-select" title="Select Response Language">
+            <option value="English" selected>🇬🇧 English</option>
+            <option value="Hindi">🇮🇳 हिंदी (Hindi)</option>
+            <option value="Telugu">తెలుగు (Telugu)</option>
+            <option value="Tamil">தமிழ் (Tamil)</option>
+            <option value="Kannada">ಕನ್ನಡ (Kannada)</option>
+          </select>
+        </div>
+
+        <input type="text" id="assistant-input" class="form-control chat-text-input" placeholder="Type your travel question in any language..." required autocomplete="off">
+
+        <button type="submit" id="assistant-send-btn" class="btn btn-primary btn-shimmer chat-send-btn">
+          <span>Send</span> ✈️
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION: DASHBOARD
+     ═══════════════════════════════════════════════════════════ -->
+<section id="section-dashboard" class="section hidden">
+  <div class="container">
+    <div class="section-header">
+      <h2>📊 Tourism Dashboard</h2>
+      <p>Platform statistics and destination highlights</p>
+      <div class="section-divider" aria-hidden="true"></div>
+    </div>
+    <div class="page-pad" style="padding-top:0">
+      <div class="stats-grid" style="margin-bottom:2rem">
+        <div class="stat-card">
+          <div class="stat-num">30+</div>
+          <div class="stat-desc">Destinations Across India</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">25+</div>
+          <div class="stat-desc">Curated Demo Hotels</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">13+</div>
+          <div class="stat-desc">Local Businesses Listed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">8</div>
+          <div class="stat-desc">Backend API Endpoints</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">AI</div>
+          <div class="stat-desc">Gemini-Powered Planner</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">10</div>
+          <div class="stat-desc">Supported Languages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">100%</div>
+          <div class="stat-desc">Backend API Secured</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">JWT</div>
+          <div class="stat-desc">Authentication System</div>
+        </div>
+      </div>
+
+      <div style="background:var(--green-xlight); border-radius:var(--radius-md); padding:1.5rem">
+        <h3 style="color:var(--green-primary); margin-bottom:1rem">🏆 SIH — About This Project</h3>
+        <p><strong>Camp With Us</strong> is a Smart India Hackathon tourism platform built for the theme: <em>"Student Innovation — A solution/idea that can boost the current situation of the tourism industries including hotels, travel and others."</em></p>
+        <br>
+        <p>The platform provides AI-powered itinerary generation, smart hotel discovery, multilingual assistance, emergency safety tools, local business promotion and a complete tourism information system — all connected end-to-end through a Node.js + MongoDB + Gemini AI backend.</p>
+        <br>
+        <div style="display:flex; gap:.75rem; flex-wrap:wrap; margin-top:.5rem">
+          <span class="amenity-badge">Node.js + Express</span>
+          <span class="amenity-badge">MongoDB Atlas</span>
+          <span class="amenity-badge">Google Gemini AI</span>
+          <span class="amenity-badge">JWT Auth</span>
+          <span class="amenity-badge">HTML5 + CSS3 + JS</span>
+          <span class="amenity-badge">Google Maps</span>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem; background:var(--white); border-radius:var(--radius-md); padding:1.5rem; border:1.5px solid var(--gray-200)">
+        <h3 style="color:var(--green-primary); margin-bottom:1rem">🔌 API Status</h3>
+        <div id="api-status-result">
+          <button class="btn btn-outline" onclick="checkApiStatus()">Check Backend Status</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bottom-fixed action bar on mobile for quick nav (Explore, Plan, Hotels, Safety) -->
+<nav class="mobile-bottom-bar" aria-label="Mobile quick navigation">
+  <button class="mobile-bottom-btn active" data-mobile-section="destinations" onclick="showSection('destinations'); loadAllDestinations()">
+    <span class="mobile-bottom-icon">🗺️</span>
+    <span class="mobile-bottom-label">Explore</span>
+  </button>
+  <button class="mobile-bottom-btn" data-mobile-section="planner" onclick="showSection('planner')">
+    <span class="mobile-bottom-icon">🗓️</span>
+    <span class="mobile-bottom-label">Plan</span>
+  </button>
+  <button class="mobile-bottom-btn" data-mobile-section="hotels" onclick="showSection('hotels')">
+    <span class="mobile-bottom-icon">🏨</span>
+    <span class="mobile-bottom-label">Hotels</span>
+  </button>
+  <button class="mobile-bottom-btn" data-mobile-section="safety" onclick="showSection('safety'); loadSafetyNumbers()">
+    <span class="mobile-bottom-icon">🚨</span>
+    <span class="mobile-bottom-label">Safety</span>
+  </button>
+</nav>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="brand-name">🏕️ Camp With Us</div>
+      <div class="brand-tagline">Travel Smart • Travel Safe</div>
+      <p style="margin-top:.75rem; font-size:.82rem">AI-powered smart tourism platform for India. Built for Smart India Hackathon.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a onclick="showSection('destinations'); loadAllDestinations()">All Destinations</a></li>
+        <li><a onclick="showSection('planner')">AI Trip Planner</a></li>
+        <li><a onclick="showSection('hotels')">Hotel Discovery</a></li>
+        <li><a onclick="showSection('map')">Route Planner</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a onclick="showSection('assistant')">AI Assistant</a></li>
+        <li><a onclick="showSection('businesses')">Local Businesses</a></li>
+        <li><a onclick="showSection('safety')">Tourist Safety</a></li>
+        <li><a onclick="showSection('reviews')">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Emergency</h4>
+      <ul>
+        <li><a href="tel:112">🆘 National Emergency: 112</a></li>
+        <li><a href="tel:108">🚑 Ambulance: 108</a></li>
+        <li><a href="tel:100">👮 Police: 100</a></li>
+        <li><a href="tel:1800-111-363">✈️ Tourist Helpline: 1800-111-363</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Camp With Us. Built for Smart India Hackathon. Demo data — not real commercial listings.</p>
+    <span class="sih-badge">🏆 SIH 2024</span>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCRIPTS — loaded in correct dependency order
+     ═══════════════════════════════════════════════════════════ -->
+<script src="js/config.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+// ── Inline helpers that depend on all modules being loaded ───────────────────
+
+// API status check for Dashboard
+async function checkApiStatus() {
+  const el = document.getElementById('api-status-result');
+  if (el) el.innerHTML = '<div class="loading-state" style="padding:1rem"><div class="spinner"></div><p>Checking...</p></div>';
+  const { ok, data } = await API.health.test();
+  if (el) {
+    if (ok && data.success) {
+      el.innerHTML = `
+        <div style="background:var(--green-xlight); padding:1rem; border-radius:var(--radius-sm)">
+          <p>✅ <strong>Backend:</strong> Running on <code>http://localhost:5000</code></p>
+          <p>✅ <strong>Database:</strong> ${data.database === 'connected' ? 'MongoDB Connected' : '⚠️ MongoDB Disconnected'}</p>
+          <p style="font-size:.8rem; color:var(--gray-400); margin-top:.5rem">Checked at: ${new Date(data.timestamp).toLocaleTimeString()}</p>
+        </div>`;
+    } else {
+      el.innerHTML = `
+        <div style="background:#fef2f2; padding:1rem; border-radius:var(--radius-sm)">
+          <p>❌ <strong>Backend not reachable.</strong></p>
+          <p style="font-size:.85rem; margin-top:.5rem">Start the backend: open a terminal → <code>cd backend</code> → <code>npm install</code> → <code>npm start</code></p>
+        </div>`;
+    }
+  }
+}
+
+// Standalone review handler (reviews section)
+async function handleStandaloneReview(e) {
+  e.preventDefault();
+  const errEl = document.getElementById('rs-error');
+  if (errEl) errEl.textContent = '';
+  if (!Auth.isLoggedIn()) {
+    if (errEl) errEl.textContent = 'Please sign in to submit a review.';
+    return;
+  }
+  if (!reviewTargetId) {
+    if (errEl) errEl.textContent = 'Please open a destination first, then submit a review from that page.';
+    return;
+  }
+  // Re-use the main review handler
+  const rating  = parseInt(document.getElementById('rs-rating')?.value);
+  const comment = document.getElementById('rs-comment')?.value.trim();
+  if (!rating) { if (errEl) errEl.textContent = 'Please select a rating.'; return; }
+  if (!comment || comment.length < 10) { if (errEl) errEl.textContent = 'Review must be at least 10 characters.'; return; }
+  const body = { rating, comment };
+  if (reviewTargetType === 'destination') body.destinationId = reviewTargetId;
+  else body.hotelId = reviewTargetId;
+  const { ok, data } = await API.reviews.submit(body);
+  if (!ok) { if (errEl) errEl.textContent = data.message || 'Failed to submit review.'; return; }
+  showToast('Review submitted successfully!', 'success');
+  e.target.reset();
+}
+
+// Keyboard nav support on hero buttons
+document.querySelectorAll('[data-section]').forEach(el => {
+  if (el.tagName !== 'BUTTON') {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      const sec = el.dataset.section;
+      showSection(sec);
+      if (sec === 'destinations') loadAllDestinations();
+      if (sec === 'safety') loadSafetyNumbers();
+      if (sec === 'businesses') loadBusinesses();
+    });
+  }
+});
+</script>
+
+</body>
+</html>
