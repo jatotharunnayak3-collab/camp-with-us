@@ -1,0 +1,13 @@
+{
+  "name": "camp-with-us",
+  "version": "1.0.0",
+  "description": "Camp With Us - Tourism Platform",
+  "scripts": {
+    "install": "cd backend && npm install",
+    "start": "cd backend && node server.js",
+    "build": "cd backend && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
