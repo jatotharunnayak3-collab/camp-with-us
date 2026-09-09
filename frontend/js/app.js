@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
   showSection('home');
   loadFeaturedDestinations();
 
+  // ── Wake up Render backend (free tier spins down after inactivity) ──────────
+  fetch(`${CONFIG.API_BASE_URL}/test`).catch(() => {});
+  // Ping every 10 minutes to keep it alive during a session
+  setInterval(() => fetch(`${CONFIG.API_BASE_URL}/test`).catch(() => {}), 600000);
+
   // ── Nav Links ──────────────────────────────────────────────────────────────
   document.querySelectorAll('[data-section]').forEach(link => {
     link.addEventListener('click', e => {
@@ -398,7 +403,56 @@ async function handlePlannerSubmit(e) {
   if (interests.length === 0) { showToast('Please select at least one interest.', 'warning'); return; }
 
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Generating your trip...'; }
-  if (result) startPlannerLoading('planner-result');
+
+  // Show animated loading with step messages
+  if (result) {
+    result.innerHTML = `
+      <div class="form-card" style="text-align:center; padding:2rem">
+        <div style="font-size:3rem; margin-bottom:1rem">🤖</div>
+        <h3 style="color:var(--green-primary); margin-bottom:0.5rem">Generating Your Itinerary</h3>
+        <p id="planner-loading-msg" style="color:var(--gray-400); margin-bottom:1.5rem">Connecting to AI...</p>
+        <div class="spinner" style="margin:0 auto 1rem"></div>
+        <p style="font-size:0.8rem; color:var(--gray-400)">This may take 30–60 seconds. Gemini AI is crafting your personalised plan.</p>
+      </div>`;
+
+    // Cycle through status messages so user knows it's working
+    const messages = [
+      'Connecting to AI...', 'Analysing your destination...', 'Planning day-by-day activities...',
+      'Calculating budget breakdown...', 'Adding local food recommendations...', 'Almost ready...'
+    ];
+    let msgIdx = 0;
+    const msgEl = document.getElementById('planner-loading-msg');
+    const msgInterval = setInterval(() => {
+      msgIdx = (msgIdx + 1) % messages.length;
+      if (msgEl) msgEl.textContent = messages[msgIdx];
+    }, 5000);
+
+    const { ok, data } = await API.planner.generate({
+      destination, days: parseInt(days), budget: parseFloat(budget),
+      travellerType, foodPreference: foodPref,
+      interests, roamingTimes
+    });
+
+    clearInterval(msgInterval);
+    stopPlannerLoading();
+    if (btn) { btn.disabled = false; btn.textContent = '🗓️ Generate My Itinerary'; }
+
+    if (!ok) {
+      if (data.errorType === 'NETWORK_ERROR') {
+        setError('planner-result', 'Unable to connect to the server. Please ensure the backend is running.');
+      } else if (data.errorType === 'AI_NOT_CONFIGURED') {
+        setError('planner-result', 'AI planner is not configured. Please add your GEMINI_API_KEY to backend/.env and restart the server.');
+      } else if (data.errorType === 'TIMEOUT') {
+        setError('planner-result', 'The server is waking up (free tier). Please wait 30 seconds and try again.');
+      } else {
+        setError('planner-result', data.message || 'Planner failed. Please try again.');
+      }
+      return;
+    }
+
+    renderItinerary(data);
+    return;
+  }
 
   const { ok, data } = await API.planner.generate({
     destination, days: parseInt(days), budget: parseFloat(budget),
@@ -408,20 +462,6 @@ async function handlePlannerSubmit(e) {
 
   stopPlannerLoading();
   if (btn) { btn.disabled = false; btn.textContent = '🗓️ Generate My Itinerary'; }
-
-  if (!ok) {
-    if (data.errorType === 'NETWORK_ERROR') {
-      setError('planner-result', 'Unable to connect to the server. Please ensure the backend is running on port 5000.');
-    } else if (data.errorType === 'AI_NOT_CONFIGURED') {
-      setError('planner-result', 'AI planner is not configured. Please add your GEMINI_API_KEY to backend/.env and restart the server.');
-    } else {
-      setError('planner-result', data.message || 'Planner failed. Please try again.');
-    }
-    return;
-  }
-
-  renderItinerary(data);
-}
 
 function renderItinerary(data) {
   const result = document.getElementById('planner-result');
