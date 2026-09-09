@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (section === 'destinations') loadAllDestinations();
       if (section === 'safety')       loadSafetyNumbers();
       if (section === 'businesses')   loadBusinesses();
+      // Reset planner result when navigating to planner
+      if (section === 'planner') resetPlannerResult();
     });
   });
 
@@ -84,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       const dest = btn.dataset.destination || '';
       showSection('planner');
+      resetPlannerResult();
       if (dest) {
         const inp = document.getElementById('planner-destination');
         if (inp) inp.value = dest;
@@ -382,6 +385,25 @@ function loadHotelsForCity(city) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PLANNER
+// ─────────────────────────────────────────────────────────────────────────────
+function resetPlannerResult() {
+  const result = document.getElementById('planner-result');
+  if (result) {
+    result.style.flex = '';
+    result.style.maxWidth = '';
+    result.innerHTML = `
+      <div class="form-card" style="text-align:center; color:var(--gray-400)">
+        <div style="font-size:3rem; margin-bottom:1rem">🗓️</div>
+        <h3 style="color:var(--green-primary)">Your Itinerary Will Appear Here</h3>
+        <p>Fill in the form on the left and click <strong>Generate My Itinerary</strong>.</p>
+        <p style="margin-top:.5rem; font-size:.85rem">Powered by Google Gemini AI</p>
+      </div>`;
+  }
+  // Also reset the button
+  const btn = document.getElementById('planner-submit-btn');
+  if (btn) { btn.disabled = false; btn.textContent = '🗓️ Generate My Itinerary'; }
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 async function handlePlannerSubmit(e) {
   e.preventDefault();
