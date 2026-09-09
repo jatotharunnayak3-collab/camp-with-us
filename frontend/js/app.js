@@ -451,17 +451,10 @@ async function handlePlannerSubmit(e) {
     }
 
     renderItinerary(data);
-    return;
   }
 
-  const { ok, data } = await API.planner.generate({
-    destination, days: parseInt(days), budget: parseFloat(budget),
-    travellerType, foodPreference: foodPref,
-    interests, roamingTimes
-  });
-
-  stopPlannerLoading();
   if (btn) { btn.disabled = false; btn.textContent = '🗓️ Generate My Itinerary'; }
+}
 
 function renderItinerary(data) {
   const result = document.getElementById('planner-result');
