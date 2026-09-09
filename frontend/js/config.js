@@ -4,14 +4,11 @@
 //  NEVER hardcode http://localhost:5000 anywhere else.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Detect environment:
-//  - Local dev  → localhost → use local backend
-//  - Production → any other host → use the Railway backend URL
+// Local dev  → localhost:5000
+// Production → Render backend
 const _isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
 const CONFIG = {
-  // ✅ After deploying backend to Railway, replace the URL below with your
-  //    Railway backend URL, e.g: https://campwithus-backend.up.railway.app
   API_BASE_URL: _isLocal
     ? 'http://localhost:5000/api'
     : 'https://camp-with-us-vl6w.onrender.com/api',
